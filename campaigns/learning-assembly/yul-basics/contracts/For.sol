@@ -13,7 +13,17 @@ contract For {
         returns (uint256 sum)
     {
         assembly {
-
+            sum := 0
+            let i := beg
+            for { } lt(i, end) { i := add(i, 1) } {
+                if eq(mod(end, i), 0) {
+                    break
+                }
+                if eq(mod(i, 5), 0) {
+                    continue
+                }
+                sum := add(sum, i)
+            }
         }
     }
 }

@@ -13,7 +13,10 @@ contract If {
         returns (uint256 _hours)
     {
         assembly {
-
+            if slt(_minutes, 0) { revert(0, 0) }
+            let remainder := mod(_minutes, 60)
+            if iszero(eq(remainder, 0)) { revert(0, 0) }
+            _hours := div(_minutes, 60)
         }
     }
 }
