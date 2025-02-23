@@ -12,7 +12,14 @@ abstract contract Multicall {
     function multicall(
         bytes[] calldata calls
     ) external virtual returns (bytes[] memory results) {
-        // CODE HERE
+        results = new bytes[](calls.length);
+
+        for(uint256 i; i < results.length; i++) {
+            (bool success, bytes memory data) = address(this).delegatecall(calls[i]);
+            require(success, "Multicall: call failed");
+            results[i] = data;
+        }
+        return results;
     }
 
 }

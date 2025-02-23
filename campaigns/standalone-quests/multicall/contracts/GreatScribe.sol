@@ -14,7 +14,15 @@ contract GreatScribe {
         bytes[] calldata calls,
         address archives
     ) external view returns (bytes[] memory results) {
-        // CODE HERE
+        results = new bytes[](calls.length);
+
+        for(uint256 i; i < results.length; i++) {
+            (bool success, bytes memory data) = archives.staticcall(calls[i]);
+            require(success, "GreatScribe: call failed");
+            results[i] = data;
+        }
+        
+        return results;
     }
     
     /**
@@ -28,7 +36,13 @@ contract GreatScribe {
         bytes[] calldata calls,
         address archives
     ) external returns (bytes[] memory results) {
-        // CODE HERE
-    }
+        results = new bytes[](calls.length);
 
+        for(uint256 i; i < results.length; i++) {
+            (bool success, bytes memory data) = archives.call(calls[i]);
+            require(success, "GreatScribe: call failed");
+            results[i] = data;
+        }
+        return results;
+    }
 }
